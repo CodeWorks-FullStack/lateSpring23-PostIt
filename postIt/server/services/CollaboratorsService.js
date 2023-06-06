@@ -10,12 +10,12 @@ class CollaboratorsService {
   }
 
   async findAlbumCollaborators(albumId) {
-    const collabs = await dbContext.Collaborators.find({ albumId: albumId }).populate('profile')
+    const collabs = await dbContext.Collaborators.find({ albumId: albumId }).populate('profile album')
     return collabs
   }
   async getAccountCollaborations(accountId) {
     // const collabs = await dbContext.Collaborators.find({ accountId: accountId }).populate('album').populate({ path: 'album', populate: { path: 'memberCount' } }) IF you are crazy enough to do nested population
-    const collabs = await dbContext.Collaborators.find({ accountId: accountId }).populate('album')
+    const collabs = await dbContext.Collaborators.find({ accountId: accountId }).populate('album profile')
     return collabs
   }
 

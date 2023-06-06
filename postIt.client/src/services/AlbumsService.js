@@ -25,6 +25,11 @@ class AlbumsService {
         return res.data // NOTE: return the response so then we can access the id for the router push
     }
 
+    async archiveAlbum(albumId) {
+        const res = await api.delete(`api/albums/${albumId}`)
+        logger.log(res.data)
+    }
+
 }
 
 export const albumsService = new AlbumsService()

@@ -4,20 +4,22 @@
     <section class="row pt-5 fredoka-one">
       <div class="col-12">
         <h3 class="ps-5 fw-bold">My Albums</h3>
-        <!-- TODO draw my albums here -->
       </div>
-
+      <div class="col-md-3" v-for="c in myCollabs" :key="c.id">
+        <!-- NOTE be mindful of whether you are passing  a nested object -->
+        <AlbumCard :album="c.album" />
+      </div>
     </section>
     <!-- SECTION filter buttons -->
     <section class="row justify-content-center">
       <div class="col-8">
         <div class="d-flex justify-content-around my-3 bg-info rounded p-3 bungee">
           <!-- TODO make these buttons work -->
-          <button class="btn btn-outline-light w-25 mx-2">All</button>
-          <button class="btn btn-outline-light w-25 mx-2">Animals</button>
-          <button class="btn btn-outline-light w-25 mx-2">Games</button>
-          <button class="btn btn-outline-light w-25 mx-2">Books</button>
-          <button class="btn btn-outline-light w-25 mx-2">Misc</button>
+          <button @click="filterBy = ''" class="btn btn-outline-light w-25 mx-2">All</button>
+          <button @click="filterBy = 'animals'" class="btn btn-outline-light w-25 mx-2">Animals</button>
+          <button @click="filterBy = 'games'" class="btn btn-outline-light w-25 mx-2">Games</button>
+          <button @click="filterBy = 'books'" class="btn btn-outline-light w-25 mx-2">Books</button>
+          <button @click="filterBy = 'misc'" class="btn btn-outline-light w-25 mx-2">Misc</button>
         </div>
       </div>
     </section>
@@ -32,14 +34,14 @@
 </template>
 
 <script>
-import { computed, onMounted } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { albumsService } from '../services/AlbumsService.js'
 import { logger } from '../utils/Logger.js'
 import Pop from '../utils/Pop.js'
 import { AppState } from '../AppState.js'
 export default {
   setup() {
-
+    const filterBy = ref('')
     async function getAlbums() {
       try {
         logger.log('getting albums')
@@ -55,7 +57,15 @@ export default {
     })
 
     return {
-      albums: computed(() => AppState.albums) // use computed to access the data in the AppState
+      filterBy,
+      myCollabs: computed(() => AppState.myCollabs),
+      albums: computed(() => {
+        if (filterBy.value == "") {
+          return AppState.albums //if no filter...return ALL albums
+        } else {
+          return AppState.albums.filter(a => a.category == filterBy.value) //if there's a filter value...apply it
+        }
+      })
     }
   }
 }

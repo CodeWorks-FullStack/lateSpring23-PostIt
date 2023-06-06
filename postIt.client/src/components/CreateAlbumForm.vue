@@ -63,7 +63,7 @@ export default {
                     const newAlbum = await albumsService.createAlbum(formData)
                     Modal.getOrCreateInstance('#createAlbum').hide()
                     editable.value = {} // reset the form
-                    router.push({ name: 'AlbumDetails', params: { id: newAlbum.id } })
+                    router.push({ name: 'AlbumDetails', params: { id: newAlbum.id } }) // push to the new album's page
                 } catch (error) {
                     logger.error(error)
                     Pop.toast(error.message, 'error')

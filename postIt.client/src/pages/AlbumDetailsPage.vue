@@ -13,26 +13,35 @@
                             <p class="m-0 fs-4 text-white">{{ album?.title }}</p>
                             <p class="m-0">by {{ album?.creator.name }}</p>
                         </div>
-                        <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#createPicture"><i
-                                class="mdi mdi-plus"></i> add
+                        <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#createPicture"
+                            :disabled="album.archived == true"><i class="mdi mdi-plus"></i> add
                             Picture</button>
+                        <button v-if="album.creatorId == user.id" class="btn btn-success" @click="archiveAlbum()"><i
+                                class="mdi mdi-minus"></i>
+                            archive
+                            album</button>
                     </div>
                     <div class="col-6 text-white pt-3">
                         <div class="white-shadow bg-info rounded p-1 fw-bold fs-5">
                             <!-- TODO add # of collabs here -->
-                            <p class="m-0">15</p>
+                            <p class="m-0">{{ album.memberCount }}</p>
                             <p>Collaborators</p>
                         </div>
                     </div>
                     <div class="col-6 pt-3 ">
                         <!-- TODO conditionally render button -->
-                        <button class="btn btn-info text-center white-shadow fs-5 text-white fw-bold"><i
-                                class="mdi mdi-heart"></i>
+                        <button v-if="!isCollaborator" class="btn btn-info text-center white-shadow fs-5 text-white fw-bold"
+                            @click="createCollab()"><i class="mdi mdi-heart"></i>
                             Collab</button>
+                        <button v-else class="btn btn-dark text-center white-shadow fs-5 text-white fw-bold"
+                            @click="removeCollab()"><i class="mdi mdi-heart-broken"></i>
+                            Uncollab</button>
                     </div>
                 </div>
                 <!-- TODO draw album collaborators here -->
-                <div class="row">
+                <div class="row p-2">
+                    <img v-for="c in collabs" :key="c.id" :src="c.profile.picture" :alt="c.profile.name"
+                        class="collab-img white-shadow rounded">
 
                 </div>
             </div>
@@ -54,11 +63,20 @@ import { useRoute } from 'vue-router';
 import { albumsService } from '../services/AlbumsService.js';
 import { picturesService } from '../services/PicturesService.js'
 import { AppState } from '../AppState.js';
+import { collaboratorsService } from '../services/CollaboratorsService.js';
 export default {
     setup() {
         const route = useRoute()
 
-        // TODO get collaborators for album
+        async function getCollabsByAlbumId() {
+            try {
+                const albumId = route.params.id
+                await collaboratorsService.getCollabsByAlbumId(albumId)
+            } catch (error) {
+                logger.error(error)
+                Pop.toast(error.message, 'error')
+            }
+        }
 
         async function getAlbumById() {
             try {
@@ -84,11 +102,49 @@ export default {
         onMounted(() => {
             getAlbumById()
             getPicturesByAlbumId()
+            getCollabsByAlbumId()
         })
 
         return {
             album: computed(() => AppState.activeAlbum),
-            pictures: computed(() => AppState.pictures)
+            pictures: computed(() => AppState.pictures),
+            collabs: computed(() => AppState.collabs),
+            // NOTE if the appstate.collabs includes my id return true, if it doesn't return false
+            isCollaborator: computed(() => AppState.collabs.find(c => c.accountId == AppState.user.id)),
+            user: computed(() => AppState.user),
+
+            async createCollab() {
+                try {
+                    const albumId = route.params.id
+                    await collaboratorsService.createCollab(albumId)
+                } catch (error) {
+                    logger.error(error)
+                    Pop.toast(error.message, 'error')
+                }
+            },
+
+            async removeCollab() {
+                try {
+                    if (await Pop.confirm) {
+                        const collab = AppState.collabs.find(c => c.accountId == AppState.account.id)
+                        await collaboratorsService.removeCollab(collab.id)
+                    }
+                } catch (error) {
+                    logger.error(error)
+                    Pop.toast(error.message, 'error')
+                }
+            },
+
+            async archiveAlbum() {
+                try {
+                    if (await Pop.confirm()) {
+                        await albumsService.archiveAlbum(route.params.id)
+                    }
+                } catch (error) {
+                    logger.error(error)
+                    Pop.toast(error.message, 'error')
+                }
+            }
         };
     },
 };
@@ -112,5 +168,11 @@ export default {
     object-fit: cover;
     box-shadow: 2px 2px white;
 
+}
+
+.collab-img {
+    height: 10vh;
+    width: 10vh;
+    object-fit: cover;
 }
 </style>

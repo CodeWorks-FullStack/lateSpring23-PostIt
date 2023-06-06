@@ -20,11 +20,7 @@
               class="mdi mdi-plus"></i> create
             album</button>
         </li>
-        <li class="mx-2">
-          <!-- TODO conditionally render button -->
-          <button class="btn btn-success"><i class="mdi mdi-minus"></i> archive
-            album</button>
-        </li>
+
       </ul>
       <!-- LOGIN COMPONENT HERE -->
       <Login />

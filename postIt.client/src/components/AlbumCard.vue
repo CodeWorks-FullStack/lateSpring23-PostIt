@@ -5,7 +5,7 @@
             <div class="text-center p-2 rounded-bottom text-white fw-bold" :class="getRandomBg()">
                 <p class="m-0">{{ album.title }}</p>
                 <!-- TODO put album collab count here -->
-                <p class="m-0">27<i class="mdi mdi-heart ps-2"></i></p>
+                <p class="m-0">{{ album.memberCount }}<i class="mdi mdi-heart ps-2"></i></p>
             </div>
         </div>
     </router-link>
