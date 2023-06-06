@@ -1,28 +1,45 @@
 <template>
-    <div class="container-fluid">
+    <div class="container-fluid fredoka-one fw-bold">
         <!-- NOTE if you don't want to deal with elvis operators....wrap your component or page in a v-if -->
         <section class="row pt-4" v-if="album">
             <!-- SECTION side bar -->
             <div class="col-md-4">
                 <div class="row">
-                    <div class="col-8">
-                        <img class="rounded album-creator white-shadow" :src="album?.coverImg" :alt="album?.title">
+                    <div class="col-7">
+                        <img class="rounded album-creator white-shadow" :src="album?.creator.picture" :alt="album?.title">
                     </div>
-                    <div class="col-4">
-                        <div class="album-details rounded white-shadow p-2 mb-3">
-                            <p class="m-0">{{ album?.title }}</p>
+                    <div class="col-5">
+                        <div class="bg-warning rounded white-shadow p-2 mb-3">
+                            <p class="m-0 fs-4 text-white">{{ album?.title }}</p>
                             <p class="m-0">by {{ album?.creator.name }}</p>
                         </div>
-                        <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#createPicture">Add
+                        <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#createPicture"><i
+                                class="mdi mdi-plus"></i> add
                             Picture</button>
                     </div>
+                    <div class="col-6 text-white pt-3">
+                        <div class="white-shadow bg-info rounded p-1 fw-bold fs-5">
+                            <!-- TODO add # of collabs here -->
+                            <p class="m-0">15</p>
+                            <p>Collaborators</p>
+                        </div>
+                    </div>
+                    <div class="col-6 pt-3 ">
+                        <!-- TODO conditionally render button -->
+                        <button class="btn btn-info text-center white-shadow fs-5 text-white fw-bold"><i
+                                class="mdi mdi-heart"></i>
+                            Collab</button>
+                    </div>
+                </div>
+                <!-- TODO draw album collaborators here -->
+                <div class="row">
+
                 </div>
             </div>
             <!-- SECTION album pictures -->
             <div class="col-md-8">
                 <div class="row">
-                    <img v-for="p in pictures" :key="p.imgUrl" :src="p?.imgUrl" class="album-img white-shadow rounded"
-                        alt="">
+                    <img v-for="p in pictures" :key="p.imgUrl" :src="p?.imgUrl" class="album-img rounded m-2" alt="">
                 </div>
             </div>
         </section>
@@ -40,6 +57,9 @@ import { AppState } from '../AppState.js';
 export default {
     setup() {
         const route = useRoute()
+
+        // TODO get collaborators for album
+
         async function getAlbumById() {
             try {
                 // debugger
@@ -90,10 +110,7 @@ export default {
     height: 35vh;
     width: 35vh;
     object-fit: cover;
-}
-
-.album-details {
-    background-color: pink;
+    box-shadow: 2px 2px white;
 
 }
 </style>

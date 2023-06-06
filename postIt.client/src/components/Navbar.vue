@@ -2,7 +2,10 @@
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
     <router-link class="navbar-brand d-flex" :to="{ name: 'Home' }">
       <div class="d-flex flex-column align-items-center">
-        <img alt="logo" src="../assets/img/cw-logo.png" height="45" />
+        <h3 class="fredoka-one fw-bold">
+          <i class="mdi mdi-film"></i> Post_It
+        </h3>
+
       </div>
     </router-link>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
@@ -10,10 +13,16 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarText">
-      <ul class="navbar-nav me-auto">
+      <ul class="navbar-nav me-auto fredoka-one">
         <li>
           <!-- NOTE this v-if is rendering the button only if someone is logged in -->
-          <button v-if="user.id" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createAlbum">create
+          <button v-if="user.id" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createAlbum"><i
+              class="mdi mdi-plus"></i> create
+            album</button>
+        </li>
+        <li class="mx-2">
+          <!-- TODO conditionally render button -->
+          <button class="btn btn-success"><i class="mdi mdi-minus"></i> archive
             album</button>
         </li>
       </ul>

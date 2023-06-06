@@ -5,9 +5,7 @@
   <main class="background-img">
     <router-view />
   </main>
-  <footer class="bg-dark text-light">
-    Made with 💖 by CodeWorks
-  </footer>
+
 
   <!-- use my modal component and give it a unique id  -->
   <Modal id="createAlbum">
@@ -40,6 +38,15 @@ export default {
 :root {
   --main-height: calc(100vh - 32px - 64px);
 }
+
+.fredoka-one {
+  font-family: 'Fredoka', sans-serif;
+}
+
+.bungee {
+  font-family: 'Bungee', cursive;
+}
+
 
 .background-img {
   background-image: url('./assets/img/backgroundImg.png');

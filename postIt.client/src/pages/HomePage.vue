@@ -1,9 +1,26 @@
 <template>
-  <div class="container-fluid">
+  <div class="container-fluid text-white">
     <!-- SECTION my albums -->
-    <section class="row"></section>
+    <section class="row pt-5 fredoka-one">
+      <div class="col-12">
+        <h3 class="ps-5 fw-bold">My Albums</h3>
+        <!-- TODO draw my albums here -->
+      </div>
+
+    </section>
     <!-- SECTION filter buttons -->
-    <section class="row"></section>
+    <section class="row justify-content-center">
+      <div class="col-8">
+        <div class="d-flex justify-content-around my-3 bg-info rounded p-3 bungee">
+          <!-- TODO make these buttons work -->
+          <button class="btn btn-outline-light w-25 mx-2">All</button>
+          <button class="btn btn-outline-light w-25 mx-2">Animals</button>
+          <button class="btn btn-outline-light w-25 mx-2">Games</button>
+          <button class="btn btn-outline-light w-25 mx-2">Books</button>
+          <button class="btn btn-outline-light w-25 mx-2">Misc</button>
+        </div>
+      </div>
+    </section>
     <!-- SECTION all albums -->
     <section class="row px-5">
       <div class="col-md-3 my-3 p-4" v-for="a in albums" :key="a.id">
