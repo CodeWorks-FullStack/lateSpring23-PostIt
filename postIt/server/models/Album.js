@@ -24,3 +24,10 @@ AlbumSchema.virtual('creator', {
 })
 
 // TODO we will comeback to member count
+AlbumSchema.virtual('memberCount', {
+  localField: '_id',
+  foreignField: 'albumId',
+  ref: 'Collaborator',
+  count: true,
+})
+
