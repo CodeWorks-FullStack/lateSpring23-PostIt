@@ -1,19 +1,45 @@
 <template>
-  <div class="home flex-grow-1 d-flex flex-column align-items-center justify-content-center">
-    <div class="home-card p-5 bg-white rounded elevation-3">
-      <img src="https://bcw.blob.core.windows.net/public/img/8600856373152463" alt="CodeWorks Logo"
-        class="rounded-circle">
-      <h1 class="my-5 bg-dark text-white p-3 rounded text-center">
-        Vue 3 Starter
-      </h1>
-    </div>
+  <div class="container-fluid">
+    <!-- SECTION my albums -->
+    <section class="row"></section>
+    <!-- SECTION filter buttons -->
+    <section class="row"></section>
+    <!-- SECTION all albums -->
+    <section class="row px-5">
+      <div class="col-md-3 my-3 p-4" v-for="a in albums" :key="a.id">
+        <!-- STUB album card template -->
+        <AlbumCard :album="a" />
+      </div>
+    </section>
   </div>
 </template>
 
 <script>
+import { computed, onMounted } from 'vue'
+import { albumsService } from '../services/AlbumsService.js'
+import { logger } from '../utils/Logger.js'
+import Pop from '../utils/Pop.js'
+import { AppState } from '../AppState.js'
 export default {
   setup() {
-    return {}
+
+    async function getAlbums() {
+      try {
+        logger.log('getting albums')
+        await albumsService.getAlbums()
+      } catch (error) {
+        Pop.error(error.message)
+        logger.log(error)
+      }
+    }
+
+    onMounted(() => {
+      getAlbums()
+    })
+
+    return {
+      albums: computed(() => AppState.albums) // use computed to access the data in the AppState
+    }
   }
 }
 </script>

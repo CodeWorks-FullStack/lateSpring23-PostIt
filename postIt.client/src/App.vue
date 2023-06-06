@@ -2,12 +2,22 @@
   <header>
     <Navbar />
   </header>
-  <main>
+  <main class="background-img">
     <router-view />
   </main>
-   <footer class="bg-dark text-light">
+  <footer class="bg-dark text-light">
     Made with 💖 by CodeWorks
   </footer>
+
+  <!-- use my modal component and give it a unique id  -->
+  <Modal id="createAlbum">
+    <!-- injecting whatever I want to draw into the modal using slots -->
+    <CreateAlbumForm />
+  </Modal>
+
+  <Modal id="createPicture">
+    <CreatePictureForm />
+  </Modal>
 </template>
 
 <script>
@@ -27,10 +37,16 @@ export default {
 <style lang="scss">
 @import "./assets/scss/main.scss";
 
-:root{
+:root {
   --main-height: calc(100vh - 32px - 64px);
 }
 
+.background-img {
+  background-image: url('./assets/img/backgroundImg.png');
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed;
+}
 
 footer {
   display: grid;
